@@ -12,3 +12,24 @@ stl_mesh = mesh.Mesh.from_multi_dimensional_array(point_cloud)
 
 # Save the mesh as an STL file
 stl_mesh.save("example.stl")
+
+
+
+
+
+----------------------------------------------
+
+
+import subprocess
+
+# Define the path to your G-code file
+gcode_path = "path/to/your/gcode/file.gcode"
+
+# Define the path to the Slic3r executable
+slic3r_path = "path/to/slic3r/executable"
+
+# Define the output path for the STL file
+stl_path = "path/to/output/stl/file.stl"
+
+# Use subprocess to call Slic3r and generate the STL file
+subprocess.run([slic3r_path, "--export-stl", "--output", stl_path, gcode_path])
