@@ -18,8 +18,11 @@ def generate_text(prompt):
 
 # Define function to create STL file from text
 def create_stl_file(text):
-    mesh = pymesh.form_mesh(text)
-    pymesh.save_mesh("output.stl", mesh)
+    try:
+        mesh = pymesh.form_mesh(text)
+        pymesh.save_mesh("output.stl", mesh)
+    except:
+        print("ERROR CHAT-GPT FALSE OUTPUT")
 
 # Define main function
 def main():
