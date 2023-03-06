@@ -1,15 +1,13 @@
 import openai
-from pystl import Solid, Vertex
+import pymesh
 
-# 1. Verbinde dich mit der OpenAI API
-openai.api_key = "Dein API-Schlüssel hier"
-model_engine = "davinci"  # oder ein anderes Modell, je nach Bedarf
+# Set up OpenAI API key
+openai.api_key = "YOUR_API_KEY"
 
-# 2. Definiere eine Funktion, die ChatGPT nutzt, um den Benutzer zu fragen, was er/sie drucken möchte.
-def ask_user():
-    prompt = "Was möchtest du drucken? "
+# Define function to generate text using OpenAI's GPT-3
+def generate_text(prompt):
     response = openai.Completion.create(
-        engine=model_engine,
+        engine="text-davinci-002",
         prompt=prompt,
         max_tokens=1024,
         n=1,
@@ -18,25 +16,17 @@ def ask_user():
     )
     return response.choices[0].text.strip()
 
-# 3. Definiere eine Funktion, die aus der Benutzereingabe eine STP-Datei erstellt.
-def create_stp_file(user_input):
-    solid = Solid()  # Erstelle ein neues STP-Objekt
+# Define function to create STL file from text
+def create_stl_file(text):
+    mesh = pymesh.form_mesh(text)
+    pymesh.save_mesh("output.stl", mesh)
 
-    # Füge einige Beispielgeometrien hinzu
-    # Hier kannst du deiner Kreativität freien Lauf lassen und die Geometrien basierend auf der Benutzereingabe erstellen.
-    solid.add_face([Vertex(0,0,0), Vertex(1,0,0), Vertex(1,1,0)])
-    solid.add_face([Vertex(0,0,0), Vertex(1,1,0), Vertex(0,1,0)])
-    solid.add_face([Vertex(0,0,0), Vertex(0,1,0), Vertex(0,1,1)])
-    solid.add_face([Vertex(0,0,0), Vertex(0,1,1), Vertex(0,0,1)])
-
-    # Speichere das STP-Objekt in einer Datei
-    solid.write_stp("output.stp")
-
-# 4. Hauptprogramm
+# Define main function
 def main():
-    user_input = ask_user()
-    create_stp_file(user_input)
+    prompt = "What do you want to print?"
+    text = generate_text(prompt)
+    create_stl_file(text)
 
-# 5. Führe das Hauptprogramm aus
+# Call main function
 if __name__ == "__main__":
     main()
